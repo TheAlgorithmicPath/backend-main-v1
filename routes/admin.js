@@ -16,6 +16,11 @@ const {
   getQuestions,
   updateQuestion,
   deleteQuestion,
+
+  createTopicPage,
+  getTopicPage,
+  updateTopicPage,
+  deleteTopicPage,
 } = require("../controllers/admin");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middleWares/auth");
@@ -62,5 +67,21 @@ router
   .route("/delete-question/:id")
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteQuestion);
 
+//////////////     Topic Pages     //////////////
+
+router
+  .route("/create-topic-page/:topic")
+  .post(isAuthenticatedUser, authorizeRoles("admin"), createTopicPage);
+
+router
+  .route("/update-topic-page/:id")
+  .patch(isAuthenticatedUser, authorizeRoles("admin"), updateTopicPage);
+router
+  .route("/topic-page")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), getTopicPage);
+
+router
+  .route("/delete-topic-page/:id")
+  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteTopicPage);
 
 module.exports = router;

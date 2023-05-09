@@ -1,19 +1,16 @@
 const Article = require("../models/article");
 const Video = require("../models/video");
 const Question = require("../models/question");
+const TopicPage = require("../models/topicPage");
 // const ErrorHandler = require("../utils/errorHandlers");
 const catchAsyncErrors = require("../middleWares/catchAsyncErrors");
+const Subject = require("../models/subject");
 
 //////////////////////     ARTICLE     //////////////////////
 
 // Create a new article     => /api/v1/create-article
 exports.addArticle = catchAsyncErrors(async (req, res, next) => {
-  const newArticle = {
-    name: req.body.name,
-    contributor: req.body.contributor,
-    url: req.body.url,
-  };
-  const article = await Article.create(newArticle);
+  const article = await Article.create({ ...req.body });
 
   res.status(200).json({
     success: true,
@@ -34,7 +31,7 @@ exports.getArticles = catchAsyncErrors(async (req, res, next) => {
 // Update an article     => /api/v1/update-article/:id
 exports.updateArticle = catchAsyncErrors(async (req, res, next) => {
   const updatedArticle = await Article.findByIdAndUpdate(
-    req.query.id,
+    req.params.id,
     { ...req.body },
     {
       new: true,
@@ -52,7 +49,7 @@ exports.updateArticle = catchAsyncErrors(async (req, res, next) => {
 
 // Delete an article     => /api/v1/delete-article/:id
 exports.deleteArticle = catchAsyncErrors(async (req, res, next) => {
-  await Article.findByIdAndDelete(req.query.id);
+  await Article.findByIdAndDelete(req.params.id);
   res.status(200).json({
     success: true,
     message: "Article deleted successfully",
@@ -106,7 +103,7 @@ exports.updateVideo = catchAsyncErrors(async (req, res, next) => {
 
 // Delete a video     => /api/v1/delete-video/:id
 exports.deleteVideo = catchAsyncErrors(async (req, res, next) => {
-  await Video.findByIdAndDelete(req.query.id);
+  await Video.findByIdAndDelete(req.params.id);
   res.status(200).json({
     success: true,
     message: "Video deleted successfully",
@@ -159,7 +156,7 @@ exports.updateQuestion = catchAsyncErrors(async (req, res, next) => {
 
 // Delete a question     => /api/v1/delete-question/:id
 exports.deleteQuestion = catchAsyncErrors(async (req, res, next) => {
-  await Question.findByIdAndDelete(req.query.id);
+  await Question.findByIdAndDelete(req.params.id);
   res.status(200).json({
     success: true,
     message: "Question deleted successfully",
@@ -167,4 +164,97 @@ exports.deleteQuestion = catchAsyncErrors(async (req, res, next) => {
 });
 
 //////////////////////     Topic page     //////////////////////
- 
+
+// Create a new topic page     => /api/v1/create-topic-page/:topic
+exports.createTopicPage = catchAsyncErrors(async (req, res, next) => {
+  const topicType = req.params.topic;
+  const topicPage = await TopicPage.create({ ...req.body });
+  const subjects = await Subject.find();
+  const subject = subjects[0];
+  if (topicType === "DSA") {
+    subject.dsaPages.push(topicPage._id);
+  } else if (topicType === "LANG") {
+    subject.languagePages.push(topicPage._id);
+  } else if (topicType === "CSF") {
+    subject.csFundamentalsPages.push(topicPage._id);
+  } else if (topicType === "PROJ") {
+    subject.projectPages.push(topicPage._id);
+  }
+  await subject.save();
+  res.status(200).json({
+    success: true,
+    message: "Topic page created successfully",
+    topicPage,
+  });
+});
+
+// Update a topic page     => /api/v1/update-topic-page/:id
+exports.updateTopicPage = catchAsyncErrors(async (req, res, next) => {
+  const updatedTopicPage = await TopicPage.findByIdAndUpdate(
+    req.params.id,
+    { ...req.body },
+    {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }
+  );
+  res.status(200).json({
+    success: true,
+    message: "Topic page updated successfully",
+    updatedTopicPage,
+  });
+});
+
+// Get topic pages        => /api/v1/all-topic-pages
+exports.getTopicPage = catchAsyncErrors(async (req, res, next) => {
+  const subjects = await Subject.find();
+  const subject = subjects[0];
+  const topicType = req.query.topic;
+  const index = req.query.pageNo - 1;
+  let topicPage;
+  let articles = [];
+  let videos = [];
+  let questions = [];
+  let pageData;
+  if (topicType === "DSA") {
+    pageData = await TopicPage.findById(subject.dsaPages[index]);
+  } else if (topicType === "LANG") {
+    pageData = await TopicPage.findById(subject.languagePages[index]);
+  } else if (topicType === "CSF") {
+    pageData = await TopicPage.findById(subject.csFundamentalsPages[index]);
+  } else if (topicType === "PROJ") {
+    pageData = await TopicPage.findById(subject.projectPages[index]);
+  }
+  for (let i = 0; i < pageData.articles.length; i++) {
+    const article = await Article.findById(pageData.articles[i]);
+    articles.push(article);
+  }
+  for (let i = 0; i < pageData.videos.length; i++) {
+    const video = await Video.findById(pageData.videos[i]);
+    videos.push(video);
+  }
+  for (let i = 0; i < pageData.questions.length; i++) {
+    const question = await Question.findById(pageData.questions[i]);
+    questions.push(question);
+  }
+  topicPage = {
+    articles,
+    videos,
+    questions,
+  };
+
+  res.status(200).json({
+    success: true,
+    topicPage,
+  });
+});
+
+// Delete a topic page     => /api/v1/delete-topic-page/:id
+exports.deleteTopicPage = catchAsyncErrors(async (req, res, next) => {
+  await TopicPage.findByIdAndDelete(req.params.id);
+  res.status(200).json({
+    success: true,
+    message: "Topic page deleted successfully",
+  });
+});
