@@ -8,7 +8,7 @@ const {
     updateUserProfile,
     getFilteredUsers,
     logout,
-} = require("../controllers/authController");
+} = require("../controllers/user");
 
 const { isAuthenticatedUser } = require("../middleWares/auth");
 

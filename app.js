@@ -18,10 +18,12 @@ app.use(bodyparser.urlencoded({ extended: true }))
 app.use(cookieParser());
 app.use(fileUpload());
 
-const userRoutes = require("./routes/auth");
+const userRoutes = require("./routes/user");
+const adminRoutes = require("./routes/admin");
 
 // import all routes here
 app.use("/api/v1/", userRoutes);
+app.use("/api/v1/", adminRoutes);
 
 // middleware to handle errors
 app.use(errorMiddleware);

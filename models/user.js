@@ -96,6 +96,10 @@ const userSchema = new mongoose.Schema({
   portfolio: {
     type: String,
   },
+  role: {
+    type: String,
+    default: "user",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
