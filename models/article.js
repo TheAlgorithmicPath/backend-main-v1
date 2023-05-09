@@ -26,13 +26,13 @@ const articleSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  type: {
+  subject: {
     type: String,
     enum: {
-      values: ["DSA", "LANG", "CSF"],
+      values: ["DSA", "LANG", "CSF", "PROJ"],
       message: "Please select correct type",
     },
-    required: [true, "Please select correct type"],
+    required: [true, "Please select Subject"],
   },
   createdAt: {
     type: Date,

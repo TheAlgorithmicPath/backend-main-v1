@@ -9,21 +9,21 @@ const topicPageSchema = new mongoose.Schema({
 
   articles: [
     {
-      id: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.ObjectId,
       ref: "Article",
     },
   ],
 
   videos: [
     {
-      id: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.ObjectId,
       ref: "Video",
     },
   ],
 
   questions: [
     {
-      id: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.ObjectId,
       ref: "Question",
     },
   ],

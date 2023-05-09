@@ -134,3 +134,29 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
     message: "Logged out !!",
   });
 });
+
+
+//////////////////////     Topic page     //////////////////////
+
+// Create a new Topic     => /api/v1/create-topic
+exports.createTopic = catchAsyncErrors(async (req, res, next) => {
+  
+  const newTopic = await TopicPage.create({...req.body});
+
+  res.status(200).json({
+    success: true,
+    message: "Topic created successfully",
+  });
+});
+
+// Get topic by id     => /api/v1/topic/:id
+exports.getTopicPage = catchAsyncErrors(async (req, res, next) => {
+  console.log("req-query", req.query);
+
+  // const getTopic = await TopicPage.findById(req.query.subject)
+
+  res.status(200).json({
+    success: true,
+    message: "Got Topic successfully",
+  });
+});
