@@ -11,8 +11,8 @@ const videoSchema = new mongoose.Schema({
     required: [true, "Please Enter Video URL"],
     maxLength: [150, "Please use some url shortner."],
   },
-  contributer: {
-    type: Schema.Types.ObjectId,
+  contributor: {
+    type: mongoose.Schema.ObjectId,
     ref: "User",
   },
   description: {

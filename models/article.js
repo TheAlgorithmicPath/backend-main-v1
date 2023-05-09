@@ -11,8 +11,8 @@ const articleSchema = new mongoose.Schema({
     required: [true, "Please Enter Article URL"],
     maxLength: [150, "Please use some url shortner."],
   },
-  contributer: {
-    type: Schema.Types.ObjectId,
+  contributor: {
+    type: mongoose.Schema.ObjectId,
     ref: "User",
   },
   description: {

@@ -1,18 +1,18 @@
 const mongoose = require("mongoose");
 
-const problemSchema = new mongoose.Schema({
+const questionSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please Enter Problem Name"],
+    required: [true, "Please Enter Question Name"],
     maxLength: [50, "Your name cannot exceed 50 characters"],
   },
   url: {
     type: String,
-    required: [true, "Please Enter Problem URL"],
+    required: [true, "Please Enter Question URL"],
     maxLength: [150, "Please use some url shortner."],
   },
-  contributer: {
-    type: Schema.Types.ObjectId,
+  contributor: {
+    type: mongoose.Schema.ObjectId,
     ref: "User",
   },
   description: {
@@ -28,4 +28,4 @@ const problemSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Problem", problemSchema);
+module.exports = mongoose.model("Question", questionSchema);

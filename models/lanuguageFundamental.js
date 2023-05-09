@@ -4,7 +4,7 @@ const languageFundamentalSchema = new mongoose.Schema({
   
   topicPages:[
     {
-        id: Schema.Types.ObjectId,
+      id: mongoose.Schema.ObjectId,
         ref: "TopicPage",
     },
   ],
