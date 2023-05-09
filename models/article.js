@@ -9,7 +9,7 @@ const articleSchema = new mongoose.Schema({
   url: {
     type: String,
     required: [true, "Please Enter Article URL"],
-    maxLength: [150, "Please use some url shortner."],
+    maxLength: [150, "Please use some url shorter."],
   },
   contributor: {
     type: mongoose.Schema.ObjectId,
@@ -21,6 +21,18 @@ const articleSchema = new mongoose.Schema({
   verified: {
     type: Boolean,
     default: false,
+  },
+  inUse: {
+    type: Boolean,
+    default: false,
+  },
+  type: {
+    type: String,
+    enum: {
+      values: ["DSA", "LANG", "CSF"],
+      message: "Please select correct type",
+    },
+    required: [true, "Please select correct type"],
   },
   createdAt: {
     type: Date,
