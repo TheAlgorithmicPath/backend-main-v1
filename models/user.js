@@ -41,11 +41,11 @@ const userSchema = new mongoose.Schema({
   },
   branch: {
     type: String,
-    required: [true, "Please enter your branch"],
+    // required: [true, "Please enter your branch"],
   },
   sem: {
     type: Number,
-    required: [true, "Please enter your semester"],
+    // required: [true, "Please enter your semester"],
   },
   year: {
     type: Number,

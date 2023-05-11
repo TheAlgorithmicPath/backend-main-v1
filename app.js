@@ -5,6 +5,9 @@ const fileUpload = require("express-fileupload");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
+// let cors = require('cors')
+
+// app.use(cors()) ;
 
 const errorMiddleware = require("./middleWares/errors");
 
