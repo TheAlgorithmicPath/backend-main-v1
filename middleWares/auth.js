@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 exports.isAuthenticatedUser = catchAsyncErrors( async(req,res,next) => {
 
     const { token } = req.cookies;
-
+    
     if(!token){
         return next(new ErrorHandler('Login first to access the resource.'));
     }

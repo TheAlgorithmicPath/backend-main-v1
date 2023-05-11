@@ -7,15 +7,33 @@ const bcrypt = require("bcryptjs");
 
 // Register a user     => /api/v1/register
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.create({
-    ...req.body,
-  });
+  let newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    phone: req.body.phone,
+  };
+  if (req.body.avatar) {
+    // upload
+    const res1 = await cloudinary.uploader.upload(req.body.avatar, {
+      folder: "users",
+      width: 150,
+      crop: "scale",
+    });
+    newUserData.avatar = {
+      public_id: res1.public_id,
+      url: res1.secure_url,
+    };
+  }
+  
+  const user = await User.create(newUserData);
   sendToken(user, 200, res);
 });
 
 // Login user     => /api/v1/login
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   const { email, password } = req.body;
+  // console.log(req.body);
   // check if email and password are entered or not
   if (!email || !password) {
     return next(new ErrorHandler("Please enter a email and password", 400));
@@ -135,13 +153,11 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-
 //////////////////////     Topic page     //////////////////////
 
 // Create a new Topic     => /api/v1/create-topic
 exports.createTopic = catchAsyncErrors(async (req, res, next) => {
-  
-  const newTopic = await TopicPage.create({...req.body});
+  const newTopic = await TopicPage.create({ ...req.body });
 
   res.status(200).json({
     success: true,
