@@ -5,15 +5,19 @@ const {
   addArticle,
   getArticles,
   updateArticle,
+  getFilteredArticles,
+  getArticlesBySubject,
   deleteArticle,
 
   addVideo,
   getVideos,
+  getVideosBySubject,
   updateVideo,
   deleteVideo,
 
   addQuestion,
   getQuestions,
+  getQuestionsBySubject,
   updateQuestion,
   deleteQuestion,
 
@@ -21,56 +25,67 @@ const {
   getTopicPage,
   updateTopicPage,
   deleteTopicPage,
+  getTopicsName,
 } = require("../controllers/admin");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middleWares/auth");
 
 //////////////     Articles     //////////////
 router
-  .route("/admin/create-article")
+  .route("/create-article")
   .post(isAuthenticatedUser, authorizeRoles("admin"), addArticle);
 router
-  .route("/admin/all-articles")
+  .route("/all-articles")
   .get(isAuthenticatedUser, authorizeRoles("admin"), getArticles);
 router
-  .route("/admin/update-article/:id")
+  .route("/get-articles-by-subject/:subject")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), getArticlesBySubject);
+router
+  .route("/update-article/:id")
   .patch(isAuthenticatedUser, authorizeRoles("admin"), updateArticle);
 router
-  .route("/admin/delete-article/:id")
+  .route("/delete-article/:id")
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteArticle);
 
 //////////////     Videos     //////////////
 router
-  .route("/admin/create-video")
+  .route("/create-video")
   .post(isAuthenticatedUser, authorizeRoles("admin"), addVideo);
 router
-  .route("/admin/all-videos")
+  .route("/all-videos")
   .get(isAuthenticatedUser, authorizeRoles("admin"), getVideos);
 router
-  .route("/admin/delete-video/:id")
+  .route("/get-videos-by-subject/:subject")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), getVideosBySubject);
+
+router
+  .route("/delete-video/:id")
   .patch(isAuthenticatedUser, authorizeRoles("admin"), updateVideo);
 router
-  .route("/admin/update-video/:id")
+  .route("/update-video/:id")
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteVideo);
 
 //////////////     Questions     //////////////
 router
-  .route("/admin/create-question")
+  .route("/create-question")
   .post(isAuthenticatedUser, authorizeRoles("admin"), addQuestion);
 router
-  .route("/admin/all-questions")
+  .route("/all-questions")
   .get(isAuthenticatedUser, authorizeRoles("admin"), getQuestions);
 router
-  .route("/admin/update-question/:id")
+  .route("/get-questions-by-subject/:subject")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), getQuestionsBySubject);
+router
+  .route("/update-question/:id")
   .patch(isAuthenticatedUser, authorizeRoles("admin"), updateQuestion);
 router
-  .route("/admin/delete-question/:id")
+  .route("/delete-question/:id")
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteQuestion);
 
 //////////////     Topic Pages     //////////////
 
 router
-  .route("/create-topic-page/:topic")
+  .route("/create-topic-page/:subject")
   .post(isAuthenticatedUser, authorizeRoles("admin"), createTopicPage);
 
 router
@@ -84,4 +99,11 @@ router
   .route("/delete-topic-page/:id")
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteTopicPage);
 
+router
+  .route("/get-all-topic-pages")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), getTopicsName);
+
+router
+  .route("/get-filtered-articles")
+  .post(isAuthenticatedUser, authorizeRoles("admin"), getFilteredArticles);
 module.exports = router;

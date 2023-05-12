@@ -26,7 +26,7 @@ const adminRoutes = require("./routes/admin");
 
 // import all routes here
 app.use("/api/v1/", userRoutes);
-app.use("/api/v1/", adminRoutes);
+app.use("/api/v1/admin/", adminRoutes);
 
 // middleware to handle errors
 app.use(errorMiddleware);

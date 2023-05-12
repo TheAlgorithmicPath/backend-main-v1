@@ -19,6 +19,16 @@ exports.addArticle = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+// Get articles by subject     => /api/v1/get-articles-by-subject/:subject
+exports.getArticlesBySubject = catchAsyncErrors(async (req, res, next) => {
+  const subject = req.params.subject;
+  const articles = await Article.find({ subject });
+  res.status(200).json({
+    success: true,
+    articles,
+  });
+});
+
 // Get all articles     => /api/v1/all-articles
 exports.getArticles = catchAsyncErrors(async (req, res, next) => {
   const articles = await Article.find();
@@ -47,6 +57,16 @@ exports.updateArticle = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+// Get filtered articles     => /api/v1/get-filtered-articles
+exports.getFilteredArticles = catchAsyncErrors(async (req, res, next) => {
+  const articleIds = req.body.articleIds;
+  const articles = await Article.find({ _id: { $in: articleIds } });
+  res.status(200).json({
+    success: true,
+    articles,
+  });
+});
+
 // Delete an article     => /api/v1/delete-article/:id
 exports.deleteArticle = catchAsyncErrors(async (req, res, next) => {
   await Article.findByIdAndDelete(req.params.id);
@@ -72,6 +92,16 @@ exports.addVideo = catchAsyncErrors(async (req, res, next) => {
 // Get all videos     => /api/v1/all-videos
 exports.getVideos = catchAsyncErrors(async (req, res, next) => {
   const videos = await Video.find();
+  res.status(200).json({
+    success: true,
+    videos,
+  });
+});
+
+// Get video by subject     => /api/v1/get-video-by-subject/:subject
+exports.getVideosBySubject = catchAsyncErrors(async (req, res, next) => {
+  const subject = req.params.subject;
+  const videos = await Video.find({ subject });
   res.status(200).json({
     success: true,
     videos,
@@ -117,6 +147,16 @@ exports.addQuestion = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+// Get questions by subject     => /api/v1/get-articles-by-subject/:subject
+exports.getQuestionsBySubject = catchAsyncErrors(async (req, res, next) => {
+  const subject = req.params.subject;
+  const questions = await Question.find({ subject });
+  res.status(200).json({
+    success: true,
+    questions,
+  });
+});
+
 // Get all questions     => /api/v1/all-questions
 exports.getQuestions = catchAsyncErrors(async (req, res, next) => {
   const questions = await Question.find();
@@ -154,26 +194,29 @@ exports.deleteQuestion = catchAsyncErrors(async (req, res, next) => {
 
 //////////////////////     Topic page     //////////////////////
 
-// Create a new topic page     => /api/v1/create-topic-page/:topic
+// Create a new topic page     => /api/v1/create-topic-page/:subject
 exports.createTopicPage = catchAsyncErrors(async (req, res, next) => {
-  const topicType = req.params.topic;
+  const subjectType = req.params.subject;
   const topicPage = await TopicPage.create({ ...req.body });
-  const subjects = await Subject.find();
-  const subject = subjects[0];
-  if (topicType === "DSA") {
+  let subject = await Subject.findById("645aa1b2a6b6cc2c9f88c1d4");
+  if (subjectType === "DSA") {
     subject.dsaPages.push(topicPage._id);
-  } else if (topicType === "LANG") {
+  } else if (subjectType === "LANG") {
     subject.languagePages.push(topicPage._id);
-  } else if (topicType === "CSF") {
+  } else if (subjectType === "CSF") {
     subject.csFundamentalsPages.push(topicPage._id);
-  } else if (topicType === "PROJ") {
+  } else if (subjectType === "PROJ") {
     subject.projectPages.push(topicPage._id);
   }
-  await subject.save();
+  const newSubject = await Subject.findByIdAndUpdate(subject._id, subject, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
   res.status(200).json({
     success: true,
     message: "Topic page created successfully",
-    topicPage,
+    // topicPage,
   });
 });
 
@@ -245,5 +288,43 @@ exports.deleteTopicPage = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "Topic page deleted successfully",
+  });
+});
+
+// Get all topics pages    => /api/v1/admin/get-all-topic-pages
+exports.getTopicsName = catchAsyncErrors(async (req, res, next) => {
+  const subjects = await Subject.find();
+  const subject = subjects[0];
+  let DSA = [],
+    LANG = [],
+    CSF = [],
+    PROJ = [];
+  for (let i = 0; i < subject.dsaPages.length; i++) {
+    const dsaPage = await TopicPage.findById(subject.dsaPages[i]);
+    DSA.push(dsaPage);
+  }
+  for (let i = 0; i < subject.languagePages.length; i++) {
+    const languagePages = TopicPage.findById(subject.languagePages[i]);
+    LANG.push(languagePages);
+  }
+  for (let i = 0; i < subject.csFundamentalsPages.length; i++) {
+    const csFundamentalsPages = TopicPage.findById(
+      subject.csFundamentalsPages[i]
+    );
+    CSF.push(csFundamentalsPages);
+  }
+  for (let i = 0; i < subject.projectPages.length; i++) {
+    const projectPages = TopicPage.findById(subject.projectPages[i]);
+    PROJ.push(projectPages);
+  }
+  const topics = {
+    DSA,
+    LANG,
+    CSF,
+    PROJ,
+  };
+  res.status(200).json({
+    success: true,
+    topics,
   });
 });
