@@ -22,6 +22,18 @@ const questionSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  inUse: {
+    type: Boolean,
+    default: false,
+  },
+  subject: {
+    type: String,
+    enum: {
+      values: ["DSA", "LANG", "CSF", "PROJ"],
+      message: "Please select correct type",
+    },
+    required: [true, "Please select Subject"],
+  },
   createdAt: {
     type: Date,
     default: Date.now,

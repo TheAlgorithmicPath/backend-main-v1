@@ -60,12 +60,7 @@ exports.deleteArticle = catchAsyncErrors(async (req, res, next) => {
 
 // Create a new video     => /api/v1/create-video
 exports.addVideo = catchAsyncErrors(async (req, res, next) => {
-  const newVideo = {
-    name: req.body.name,
-    contributor: req.body.contributor,
-    url: req.body.url,
-  };
-  const video = await Video.create(newVideo);
+  const video = await Video.create({ ...req.body });
 
   res.status(200).json({
     success: true,
@@ -114,13 +109,7 @@ exports.deleteVideo = catchAsyncErrors(async (req, res, next) => {
 
 // Create a new Question     => /api/v1/create-question
 exports.addQuestion = catchAsyncErrors(async (req, res, next) => {
-  const newProblem = {
-    name: req.body.name,
-    contributor: req.body.contributor,
-    url: req.body.url,
-  };
-  const problem = await Question.create(newProblem);
-
+  const problem = await Question.create({ ...req.body });
   res.status(200).json({
     success: true,
     message: "Problem created successfully",

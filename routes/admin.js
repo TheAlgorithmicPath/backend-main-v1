@@ -27,44 +27,44 @@ const { isAuthenticatedUser, authorizeRoles } = require("../middleWares/auth");
 
 //////////////     Articles     //////////////
 router
-  .route("/create-article")
+  .route("/admin/create-article")
   .post(isAuthenticatedUser, authorizeRoles("admin"), addArticle);
 router
-  .route("/all-articles")
+  .route("/admin/all-articles")
   .get(isAuthenticatedUser, authorizeRoles("admin"), getArticles);
 router
-  .route("/update-article/:id")
+  .route("/admin/update-article/:id")
   .patch(isAuthenticatedUser, authorizeRoles("admin"), updateArticle);
 router
-  .route("/delete-article/:id")
+  .route("/admin/delete-article/:id")
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteArticle);
 
 //////////////     Videos     //////////////
 router
-  .route("/create-video")
+  .route("/admin/create-video")
   .post(isAuthenticatedUser, authorizeRoles("admin"), addVideo);
 router
-  .route("/all-videos")
+  .route("/admin/all-videos")
   .get(isAuthenticatedUser, authorizeRoles("admin"), getVideos);
 router
-  .route("/delete-video/:id")
+  .route("/admin/delete-video/:id")
   .patch(isAuthenticatedUser, authorizeRoles("admin"), updateVideo);
 router
-  .route("/update-video/:id")
+  .route("/admin/update-video/:id")
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteVideo);
 
 //////////////     Questions     //////////////
 router
-  .route("/create-question")
+  .route("/admin/create-question")
   .post(isAuthenticatedUser, authorizeRoles("admin"), addQuestion);
 router
-  .route("/all-questions")
+  .route("/admin/all-questions")
   .get(isAuthenticatedUser, authorizeRoles("admin"), getQuestions);
 router
-  .route("/update-question/:id")
+  .route("/admin/update-question/:id")
   .patch(isAuthenticatedUser, authorizeRoles("admin"), updateQuestion);
 router
-  .route("/delete-question/:id")
+  .route("/admin/delete-question/:id")
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteQuestion);
 
 //////////////     Topic Pages     //////////////
