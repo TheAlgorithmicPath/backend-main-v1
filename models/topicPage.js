@@ -28,10 +28,6 @@ const topicPageSchema = new mongoose.Schema({
     },
   ],
 
-  code:{
-    type: Number,
-  },
-
   createdAt: {
     type: Date,
     default: Date.now,
