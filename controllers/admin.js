@@ -110,7 +110,9 @@ exports.getVideosBySubject = catchAsyncErrors(async (req, res, next) => {
 
 // Update a video     => /api/v1/update-video/:id
 exports.updateVideo = catchAsyncErrors(async (req, res, next) => {
+  console.log("req-bdy ",req.body);
   const updatedVideo = await Video.findByIdAndUpdate(
+    req.params.id,
     { ...req.body },
     {
       new: true,
@@ -123,6 +125,16 @@ exports.updateVideo = catchAsyncErrors(async (req, res, next) => {
     success: true,
     message: "Video updated successfully",
     updatedVideo,
+  });
+});
+
+// Get filtered videos     => /api/v1/get-filtered-videos
+exports.getFilteredVideos = catchAsyncErrors(async (req, res, next) => {
+  const videoIds = req.body.videoIds;
+  const videos = await Video.find({ _id: { $in: videoIds } });
+  res.status(200).json({
+    success: true,
+    videos,
   });
 });
 
@@ -169,6 +181,7 @@ exports.getQuestions = catchAsyncErrors(async (req, res, next) => {
 // Update a question     => /api/v1/update-question/:id
 exports.updateQuestion = catchAsyncErrors(async (req, res, next) => {
   const updatedQuestion = await Question.findByIdAndUpdate(
+    req.params.id,
     { ...req.body },
     {
       new: true,
@@ -180,6 +193,16 @@ exports.updateQuestion = catchAsyncErrors(async (req, res, next) => {
     success: true,
     message: "Question updated successfully",
     updatedQuestion,
+  });
+});
+
+// Get filtered questions     => /api/v1/get-filtered-questions
+exports.getFilteredQuestions = catchAsyncErrors(async (req, res, next) => {
+  const questionIds = req.body.questionIds;
+  const questions = await Question.find({ _id: { $in: questionIds } });
+  res.status(200).json({
+    success: true,
+    questions,
   });
 });
 

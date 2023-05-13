@@ -11,12 +11,14 @@ const {
 
   addVideo,
   getVideos,
+  getFilteredVideos,
   getVideosBySubject,
   updateVideo,
   deleteVideo,
 
   addQuestion,
   getQuestions,
+  getFilteredQuestions,
   getQuestionsBySubject,
   updateQuestion,
   deleteQuestion,
@@ -47,6 +49,10 @@ router
   .route("/delete-article/:id")
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteArticle);
 
+router
+  .route("/get-filtered-articles")
+  .post(isAuthenticatedUser, authorizeRoles("admin"), getFilteredArticles);
+
 //////////////     Videos     //////////////
 router
   .route("/create-video")
@@ -59,11 +65,15 @@ router
   .get(isAuthenticatedUser, authorizeRoles("admin"), getVideosBySubject);
 
 router
-  .route("/delete-video/:id")
+  .route("/update-video/:id")
   .patch(isAuthenticatedUser, authorizeRoles("admin"), updateVideo);
 router
-  .route("/update-video/:id")
+  .route("/delete-video/:id")
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteVideo);
+router
+  .route("/get-filtered-videos")
+  .post(isAuthenticatedUser, authorizeRoles("admin"), getFilteredVideos);
+
 
 //////////////     Questions     //////////////
 router
@@ -81,6 +91,9 @@ router
 router
   .route("/delete-question/:id")
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteQuestion);
+router
+  .route("/get-filtered-questions")
+  .post(isAuthenticatedUser, authorizeRoles("admin"), getFilteredQuestions);
 
 //////////////     Topic Pages     //////////////
 
@@ -103,7 +116,4 @@ router
   .route("/get-all-topic-pages")
   .get(isAuthenticatedUser, authorizeRoles("admin"), getTopicsName);
 
-router
-  .route("/get-filtered-articles")
-  .post(isAuthenticatedUser, authorizeRoles("admin"), getFilteredArticles);
 module.exports = router;
