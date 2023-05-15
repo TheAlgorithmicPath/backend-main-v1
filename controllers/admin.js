@@ -110,7 +110,6 @@ exports.getVideosBySubject = catchAsyncErrors(async (req, res, next) => {
 
 // Update a video     => /api/v1/update-video/:id
 exports.updateVideo = catchAsyncErrors(async (req, res, next) => {
-  console.log("req-bdy ",req.body);
   const updatedVideo = await Video.findByIdAndUpdate(
     req.params.id,
     { ...req.body },
@@ -327,17 +326,17 @@ exports.getTopicsName = catchAsyncErrors(async (req, res, next) => {
     DSA.push(dsaPage);
   }
   for (let i = 0; i < subject.languagePages.length; i++) {
-    const languagePages = TopicPage.findById(subject.languagePages[i]);
+    const languagePages = await TopicPage.findById(subject.languagePages[i]);
     LANG.push(languagePages);
   }
   for (let i = 0; i < subject.csFundamentalsPages.length; i++) {
-    const csFundamentalsPages = TopicPage.findById(
+    const csFundamentalsPages = await TopicPage.findById(
       subject.csFundamentalsPages[i]
     );
     CSF.push(csFundamentalsPages);
   }
   for (let i = 0; i < subject.projectPages.length; i++) {
-    const projectPages = TopicPage.findById(subject.projectPages[i]);
+    const projectPages = await TopicPage.findById(subject.projectPages[i]);
     PROJ.push(projectPages);
   }
   const topics = {

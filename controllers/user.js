@@ -33,7 +33,6 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
 // Login user     => /api/v1/login
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   const { email, password } = req.body;
-  // console.log(req.body);
   // check if email and password are entered or not
   if (!email || !password) {
     return next(new ErrorHandler("Please enter a email and password", 400));
@@ -49,7 +48,6 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   const isPasswordMatched = await user.comparePassword(password);
 
   if (!isPasswordMatched) {
-    // console.log(user);
     return next(new ErrorHandler("Invalid Email or Password", 401));
   }
   sendToken(user, 200, res);
@@ -92,13 +90,10 @@ exports.updateUserProfile = catchAsyncErrors(async (req, res, next) => {
     ethicalHacking: req.body.ethicalHacking,
     softwareTesting: req.body.softwareTesting,
   };
-  // console.log(req.body);
   if (req.body.avatar) {
     // delete
     const tempUser = await User.findById(req.user.id);
-    console.log("tempUser", tempUser);
     const image_id = tempUser?.avatar?.public_id;
-    console.log("image_id", image_id);
     if (image_id) await cloudinary.uploader.destroy(image_id);
 
     // upload
@@ -145,7 +140,6 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
     expires: new Date(Date.now()),
     httpOnly: true,
   };
-  console.log("Logged out");
 
   res.status(200).cookie("token", null, options).json({
     success: true,
@@ -167,8 +161,6 @@ exports.createTopic = catchAsyncErrors(async (req, res, next) => {
 
 // Get topic by id     => /api/v1/topic/:id
 exports.getTopicPage = catchAsyncErrors(async (req, res, next) => {
-  console.log("req-query", req.query);
-
   // const getTopic = await TopicPage.findById(req.query.subject)
 
   res.status(200).json({

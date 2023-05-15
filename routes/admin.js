@@ -38,10 +38,10 @@ router
   .post(isAuthenticatedUser, authorizeRoles("admin"), addArticle);
 router
   .route("/all-articles")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getArticles);
+  .get(isAuthenticatedUser,  getArticles);
 router
   .route("/get-articles-by-subject/:subject")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getArticlesBySubject);
+  .get(isAuthenticatedUser,  getArticlesBySubject);
 router
   .route("/update-article/:id")
   .patch(isAuthenticatedUser, authorizeRoles("admin"), updateArticle);
@@ -51,7 +51,7 @@ router
 
 router
   .route("/get-filtered-articles")
-  .post(isAuthenticatedUser, authorizeRoles("admin"), getFilteredArticles);
+  .post(isAuthenticatedUser, getFilteredArticles);
 
 //////////////     Videos     //////////////
 router
@@ -59,10 +59,10 @@ router
   .post(isAuthenticatedUser, authorizeRoles("admin"), addVideo);
 router
   .route("/all-videos")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getVideos);
+  .get(isAuthenticatedUser, getVideos);
 router
   .route("/get-videos-by-subject/:subject")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getVideosBySubject);
+  .get(isAuthenticatedUser, getVideosBySubject);
 
 router
   .route("/update-video/:id")
@@ -72,7 +72,7 @@ router
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteVideo);
 router
   .route("/get-filtered-videos")
-  .post(isAuthenticatedUser, authorizeRoles("admin"), getFilteredVideos);
+  .post(isAuthenticatedUser, getFilteredVideos);
 
 
 //////////////     Questions     //////////////
@@ -81,10 +81,10 @@ router
   .post(isAuthenticatedUser, authorizeRoles("admin"), addQuestion);
 router
   .route("/all-questions")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getQuestions);
+  .get(isAuthenticatedUser, getQuestions);
 router
   .route("/get-questions-by-subject/:subject")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getQuestionsBySubject);
+  .get(isAuthenticatedUser, getQuestionsBySubject);
 router
   .route("/update-question/:id")
   .patch(isAuthenticatedUser, authorizeRoles("admin"), updateQuestion);
@@ -93,7 +93,7 @@ router
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteQuestion);
 router
   .route("/get-filtered-questions")
-  .post(isAuthenticatedUser, authorizeRoles("admin"), getFilteredQuestions);
+  .post(isAuthenticatedUser, getFilteredQuestions);
 
 //////////////     Topic Pages     //////////////
 
@@ -106,7 +106,7 @@ router
   .patch(isAuthenticatedUser, authorizeRoles("admin"), updateTopicPage);
 router
   .route("/topic-page")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getTopicPage);
+  .get(isAuthenticatedUser, getTopicPage);
 
 router
   .route("/delete-topic-page/:id")
@@ -114,6 +114,6 @@ router
 
 router
   .route("/get-all-topic-pages")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getTopicsName);
+  .get(isAuthenticatedUser, getTopicsName);
 
 module.exports = router;
