@@ -12,7 +12,14 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     email: req.body.email,
     password: req.body.password,
     phone: req.body.phone,
+    userId: req.body.userId,
   };
+  if (newUserData.userId) {
+    const tempUser = await User.findOne({ userId: newUserData.userId });
+    if (tempUser) {
+      return next(new ErrorHandler("User id already exists", 400));
+    }
+  }
   if (req.body.avatar) {
     // upload
     const res1 = await cloudinary.uploader.upload(req.body.avatar, {
@@ -25,7 +32,7 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
       url: res1.secure_url,
     };
   }
-  
+
   const user = await User.create(newUserData);
   sendToken(user, 200, res);
 });
@@ -34,21 +41,33 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   const { email, password } = req.body;
   // check if email and password are entered or not
-  if (!email || !password) {
-    return next(new ErrorHandler("Please enter a email and password", 400));
+  if (!email) {
+    return next(new ErrorHandler("Please enter user id", 400));
+  }
+  if (!password) {
+    return next(new ErrorHandler("Please enter password", 400));
+  }
+  let user;
+  if (email.includes("@")) {
+    user = await User.findOne({ email }).select("+password");
+    if (!user) {
+      return next(new ErrorHandler("Invalid Email or Password", 401));
+    }
+  } else {
+    user = await User.findOne({ userId: email }).select("+password");
+    if (!user) {
+      return next(new ErrorHandler("Invalid user id or Password", 401));
+    }
   }
 
   // Finding user in database
-  const user = await User.findOne({ email }).select("+password");
-  if (!user) {
-    return next(new ErrorHandler("Invalid Email or Password", 401));
-  }
+  // const user = await User.findOne({ email }).select("+password");
 
   // check password is correct or not
   const isPasswordMatched = await user.comparePassword(password);
 
   if (!isPasswordMatched) {
-    return next(new ErrorHandler("Invalid Email or Password", 401));
+    return next(new ErrorHandler("Invalid Id or Password", 401));
   }
   sendToken(user, 200, res);
 });
@@ -90,6 +109,7 @@ exports.updateUserProfile = catchAsyncErrors(async (req, res, next) => {
     ethicalHacking: req.body.ethicalHacking,
     softwareTesting: req.body.softwareTesting,
   };
+  // console.log(req.body)
   if (req.body.avatar) {
     // delete
     const tempUser = await User.findById(req.user.id);
@@ -140,7 +160,11 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
     expires: new Date(Date.now()),
     httpOnly: true,
   };
-
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://frontend-main-v1.vercel.app",
+    "http://localhost:3000"
+  );
   res.status(200).cookie("token", null, options).json({
     success: true,
     message: "Logged out !!",
