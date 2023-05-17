@@ -14,7 +14,7 @@ const errorMiddleware = require("./middleWares/errors");
 dotenv.config({ path: "./config/config.env" });
 
 const allowedOrigins = [
-  "https://frontend-main-v1.vercel.app/",
+  "https://frontend-main-v1.vercel.app",
   "http://localhost:3000",
 ];
 app.use(

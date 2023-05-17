@@ -19,12 +19,14 @@ router.route("/filtered-users").post(isAuthenticatedUser, getFilteredUsers);
 router.route("/me/update").put(isAuthenticatedUser, updateUserProfile);
 router.route("/logout").get(logout);
 router.route("/isAuthenticatedUser").get(isAuthenticatedUser, (req, res) => {
+  res.header("Access-Control-Allow-Origin", "https://frontend-main-v1.vercel.app", "http://localhost:3000");
   res.status(200).json({
     success: true,
     user: req.user,
   });
 });
 router.route("/test").get((req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   const options = {
     expires: new Date(
       Date.now() + process.env.COOKIE_EXPIRES_TIME * 24 * 60 * 60 * 1000

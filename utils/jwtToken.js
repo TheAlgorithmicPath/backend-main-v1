@@ -12,7 +12,7 @@ const sendToken = (user, statusCode, res) => {
     sameSite: "None",
     secure: true,
   };
-  
+  res.header("Access-Control-Allow-Origin", "https://frontend-main-v1.vercel.app", "http://localhost:3000");
   res.status(statusCode).cookie("token", token, options).json({
     success: true,
     message: "Welcome back !!",
