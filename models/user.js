@@ -3,6 +3,7 @@ const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const { type } = require("os");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -10,7 +11,7 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please enter your name"],
     maxLength: [30, "Your name cannot exceed 30 characters"],
   },
-  userId:{
+  userId: {
     type: String,
     unique: true,
     required: [true, "Please enter your user id"],
@@ -105,6 +106,42 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "user",
   },
+  badges: {
+    type: String,
+    default: "Beginner",
+  },
+  contribution: {
+    articles: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Article",
+      },
+    ],
+    videos: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Video",
+      },
+    ],
+    questions: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Question",
+      },
+    ],
+  },
+  bookmarks: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "TopicPage",
+    },
+  ],
+  completed: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "TopicPage",
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
