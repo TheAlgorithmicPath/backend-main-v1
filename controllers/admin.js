@@ -20,11 +20,23 @@ exports.addArticle = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user.id);
   user.contribution.articles.push(article._id);
   await user.save({ new: true, validateBeforeSave: false });
-  
+
   res.status(200).json({
     success: true,
     message,
     article,
+  });
+});
+
+// Get all unverified articles     => /api/v1/get-all-unverified-articles/:subject
+exports.getUnverifiedArticles = catchAsyncErrors(async (req, res, next) => {
+  const articles = await Article.find({
+    verified: false,
+    subject: req.params.subject,
+  });
+  res.status(200).json({
+    success: true,
+    articles,
   });
 });
 
@@ -76,6 +88,7 @@ exports.getFilteredArticles = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+
 // Delete an article     => /api/v1/delete-article/:id
 exports.deleteArticle = catchAsyncErrors(async (req, res, next) => {
   await Article.findByIdAndDelete(req.params.id);
@@ -108,6 +121,18 @@ exports.addVideo = catchAsyncErrors(async (req, res, next) => {
 // Get all videos     => /api/v1/all-videos
 exports.getVideos = catchAsyncErrors(async (req, res, next) => {
   const videos = await Video.find();
+  res.status(200).json({
+    success: true,
+    videos,
+  });
+});
+
+// Get all unverified videos     => /api/v1/get-all-unverified-videos/:subject
+exports.getUnverifiedVideos = catchAsyncErrors(async (req, res, next) => {
+  const videos = await Video.find({
+    verified: false,
+    subject: req.params.subject,
+  });
   res.status(200).json({
     success: true,
     videos,
@@ -195,6 +220,18 @@ exports.getQuestionsBySubject = catchAsyncErrors(async (req, res, next) => {
 // Get all questions     => /api/v1/all-questions
 exports.getQuestions = catchAsyncErrors(async (req, res, next) => {
   const questions = await Question.find();
+  res.status(200).json({
+    success: true,
+    questions,
+  });
+});
+
+// Get all unverified questions     => /api/v1/get-all-unverified-questions/:subject
+exports.getUnverifiedQuestions = catchAsyncErrors(async (req, res, next) => {
+  const questions = await Question.find({
+    verified: false,
+    subject: req.params.subject,
+  });
   res.status(200).json({
     success: true,
     questions,
