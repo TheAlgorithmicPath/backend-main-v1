@@ -33,15 +33,11 @@ const {
 const { isAuthenticatedUser, authorizeRoles } = require("../middleWares/auth");
 
 //////////////     Articles     //////////////
-router
-  .route("/create-article")
-  .post(isAuthenticatedUser, authorizeRoles("admin"), addArticle);
-router
-  .route("/all-articles")
-  .get(isAuthenticatedUser,  getArticles);
+router.route("/create-article").post(isAuthenticatedUser, addArticle);
+router.route("/all-articles").get(isAuthenticatedUser, getArticles);
 router
   .route("/get-articles-by-subject/:subject")
-  .get(isAuthenticatedUser,  getArticlesBySubject);
+  .get(isAuthenticatedUser, getArticlesBySubject);
 router
   .route("/update-article/:id")
   .patch(isAuthenticatedUser, authorizeRoles("admin"), updateArticle);
@@ -54,12 +50,8 @@ router
   .post(isAuthenticatedUser, getFilteredArticles);
 
 //////////////     Videos     //////////////
-router
-  .route("/create-video")
-  .post(isAuthenticatedUser, authorizeRoles("admin"), addVideo);
-router
-  .route("/all-videos")
-  .get(isAuthenticatedUser, getVideos);
+router.route("/create-video").post(isAuthenticatedUser, addVideo);
+router.route("/all-videos").get(isAuthenticatedUser, getVideos);
 router
   .route("/get-videos-by-subject/:subject")
   .get(isAuthenticatedUser, getVideosBySubject);
@@ -74,14 +66,9 @@ router
   .route("/get-filtered-videos")
   .post(isAuthenticatedUser, getFilteredVideos);
 
-
 //////////////     Questions     //////////////
-router
-  .route("/create-question")
-  .post(isAuthenticatedUser, authorizeRoles("admin"), addQuestion);
-router
-  .route("/all-questions")
-  .get(isAuthenticatedUser, getQuestions);
+router.route("/create-question").post(isAuthenticatedUser, addQuestion);
+router.route("/all-questions").get(isAuthenticatedUser, getQuestions);
 router
   .route("/get-questions-by-subject/:subject")
   .get(isAuthenticatedUser, getQuestionsBySubject);
@@ -104,16 +91,12 @@ router
 router
   .route("/update-topic-page/:id")
   .patch(isAuthenticatedUser, authorizeRoles("admin"), updateTopicPage);
-router
-  .route("/topic-page")
-  .get(isAuthenticatedUser, getTopicPage);
+router.route("/topic-page").get(isAuthenticatedUser, getTopicPage);
 
 router
   .route("/delete-topic-page/:id")
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteTopicPage);
 
-router
-  .route("/get-all-topic-pages")
-  .get(isAuthenticatedUser, getTopicsName);
+router.route("/get-all-topic-pages").get(isAuthenticatedUser, getTopicsName);
 
 module.exports = router;

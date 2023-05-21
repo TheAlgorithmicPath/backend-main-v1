@@ -1,6 +1,7 @@
 const Article = require("../models/article");
 const Video = require("../models/video");
 const Question = require("../models/question");
+const User = require("../models/user");
 const TopicPage = require("../models/topicPage");
 // const ErrorHandler = require("../utils/errorHandlers");
 const catchAsyncErrors = require("../middleWares/catchAsyncErrors");
@@ -11,10 +12,18 @@ const Subject = require("../models/subject");
 // Create a new article     => /api/v1/create-article
 exports.addArticle = catchAsyncErrors(async (req, res, next) => {
   const article = await Article.create({ ...req.body });
-
+  let message = "Article created successfully";
+  if (req.user?.role === "user") {
+    message =
+      "Thank you for your contribution. We will get back to you soon...";
+  }
+  const user = await User.findById(req.user.id);
+  user.contribution.articles.push(article._id);
+  await user.save({ new: true, validateBeforeSave: false });
+  
   res.status(200).json({
     success: true,
-    message: "Article created successfully",
+    message,
     article,
   });
 });
@@ -81,10 +90,17 @@ exports.deleteArticle = catchAsyncErrors(async (req, res, next) => {
 // Create a new video     => /api/v1/create-video
 exports.addVideo = catchAsyncErrors(async (req, res, next) => {
   const video = await Video.create({ ...req.body });
-
+  let message = "Video created successfully";
+  if (req.user?.role === "user") {
+    message =
+      "Thank you for your contribution. We will get back to you soon...";
+  }
+  const user = await User.findById(req.user.id);
+  user.contribution.videos.push(video._id);
+  await user.save({ new: true, validateBeforeSave: false });
   res.status(200).json({
     success: true,
-    message: "Video created successfully",
+    message,
     video,
   });
 });
@@ -151,9 +167,17 @@ exports.deleteVideo = catchAsyncErrors(async (req, res, next) => {
 // Create a new Question     => /api/v1/create-question
 exports.addQuestion = catchAsyncErrors(async (req, res, next) => {
   const problem = await Question.create({ ...req.body });
+  let message = "Question created successfully";
+  if (req.user?.role === "user") {
+    message =
+      "Thank you for your contribution. We will get back to you soon...";
+  }
+  const user = await User.findById(req.user.id);
+  user.contribution.questions.push(problem._id);
+  await user.save({ new: true, validateBeforeSave: false });
   res.status(200).json({
     success: true,
-    message: "Problem created successfully",
+    message,
     problem,
   });
 });
