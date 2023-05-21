@@ -159,6 +159,8 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
   const options = {
     expires: new Date(Date.now()),
     httpOnly: true,
+    sameSite: "None",
+    secure: true,
   };
   res.header(
     "Access-Control-Allow-Origin",

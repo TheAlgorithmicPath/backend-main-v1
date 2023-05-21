@@ -7,12 +7,14 @@ const {
   updateArticle,
   getFilteredArticles,
   getArticlesBySubject,
+  getUnverifiedArticles,
   deleteArticle,
 
   addVideo,
   getVideos,
   getFilteredVideos,
   getVideosBySubject,
+  getUnverifiedVideos,
   updateVideo,
   deleteVideo,
 
@@ -20,6 +22,7 @@ const {
   getQuestions,
   getFilteredQuestions,
   getQuestionsBySubject,
+  getUnverifiedQuestions,
   updateQuestion,
   deleteQuestion,
 
@@ -48,6 +51,9 @@ router
 router
   .route("/get-filtered-articles")
   .post(isAuthenticatedUser, getFilteredArticles);
+router
+  .route("/get-all-unverified-articles/:subject")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), getUnverifiedArticles);
 
 //////////////     Videos     //////////////
 router.route("/create-video").post(isAuthenticatedUser, addVideo);
@@ -66,6 +72,10 @@ router
   .route("/get-filtered-videos")
   .post(isAuthenticatedUser, getFilteredVideos);
 
+router
+  .route("/get-all-unverified-videos/:subject")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), getUnverifiedVideos);
+
 //////////////     Questions     //////////////
 router.route("/create-question").post(isAuthenticatedUser, addQuestion);
 router.route("/all-questions").get(isAuthenticatedUser, getQuestions);
@@ -81,6 +91,10 @@ router
 router
   .route("/get-filtered-questions")
   .post(isAuthenticatedUser, getFilteredQuestions);
+
+router
+  .route("/get-all-unverified-questions/:subject")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), getUnverifiedQuestions);
 
 //////////////     Topic Pages     //////////////
 
