@@ -86,11 +86,15 @@ exports.updateUserProfile = catchAsyncErrors(async (req, res, next) => {
   if (!req.body.id) {
     return next(new ErrorHandler("Please enter a valid id", 500));
   }
+  const oldUser = await User.findById(req.body.id);
+  if (!oldUser) {
+    return next(new ErrorHandler("User not found", 404));
+  }
 
   const newUserData = {
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password,
+    password: oldUser.password,
     phone: req.body.phone,
     institute: req.body.institute,
     company: req.body.company,
@@ -127,7 +131,7 @@ exports.updateUserProfile = catchAsyncErrors(async (req, res, next) => {
       url: res1.secure_url,
     };
   }
-  newUserData.password = await bcrypt.hash(newUserData.password, 10);
+  // newUserData.password = await bcrypt.hash(newUserData.password, 10);
 
   const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,
