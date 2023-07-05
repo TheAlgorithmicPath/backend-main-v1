@@ -281,7 +281,13 @@ exports.deleteQuestion = catchAsyncErrors(async (req, res, next) => {
 exports.createTopicPage = catchAsyncErrors(async (req, res, next) => {
   const subjectType = req.params.subject;
   const topicPage = await TopicPage.create({ ...req.body });
-  let subject = await Subject.findById("645aa1b2a6b6cc2c9f88c1d4");
+  let subject = await Subject.findById("64a520fa992770f8e1e2454d");
+  if(!subject) {
+    res.status(200).json({
+      success: false,
+      message: "Topic page not created",
+    });
+  }
   if (subjectType === "DSA") {
     subject.dsaPages.push(topicPage._id);
   } else if (subjectType === "LANG") {
