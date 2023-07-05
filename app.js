@@ -16,6 +16,7 @@ dotenv.config({ path: "./config/config.env" });
 const allowedOrigins = [
   "https://frontend-main-v1.vercel.app",
   "https://connectolike.vercel.app",
+  "https://code-companion-three.vercel.app/",
   "http://localhost:3000",
 ];
 app.use(
