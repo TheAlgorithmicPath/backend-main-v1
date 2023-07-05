@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+// const Subject = require("../models/subject");
 const {
   registerUser,
   loginUser,
@@ -25,7 +26,13 @@ router.route("/isAuthenticatedUser").get(isAuthenticatedUser, (req, res) => {
     user: req.user,
   });
 });
-router.route("/test").get((req, res) => {
+router.route("/test").get(async(req, res) => {
+  // const newSubject = await Subject.create({
+  //   dsaPages: [],
+  //   languagePages: [],
+  //   csFundamentalsPages: [],
+  //   projectPages: [],
+  // });
   res.header("Access-Control-Allow-Origin", "*");
   const options = {
     expires: new Date(
@@ -36,6 +43,7 @@ router.route("/test").get((req, res) => {
   res.cookie("token", "test-token", options);
   res.status(200).json({
     success: true,
+    newSubject,
     message: "Welcome to the API, this is test route, Server running successfully !!",
   });
 });
