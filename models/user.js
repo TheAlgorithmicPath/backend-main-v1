@@ -15,6 +15,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: true,
     required: [true, "Please enter your user id"],
+    minLength: [3, "Your user id must have at least 3 characters"],
+    maxLength: [25, "Your user id cannot exceed 25 characters"],
   },
   email: {
     type: String,
@@ -40,6 +42,11 @@ const userSchema = new mongoose.Schema({
       type: String,
     },
   },
+  notifications: [
+    {
+      type: String
+    }
+  ],
   institute: {
     type: String,
     // required: [true, "Please enter your institute"],
