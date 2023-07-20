@@ -14,7 +14,7 @@ const errorMiddleware = require("./middleWares/errors");
 dotenv.config({ path: "./config/config.env" });
 
 const allowedOrigins = [
-  "https://tapath.vercel.app/",
+  "https://tapath.vercel.app",
   "https://frontend-main-v1.vercel.app",
   "https://connectolike.vercel.app",
   "https://code-companion-beta.vercel.app",
